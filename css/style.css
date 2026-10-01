@@ -1,3 +1,4 @@
+/* Variáveis */
 :root {
     /* Cores */
     --azul-escuro: #164267;
@@ -24,16 +25,11 @@
     --espaco-5: 32px;
 }
 
+/* Base */
 body {
     background-color: var(--fundo);
     color: var(--texto);
     font-size: var(--fonte-normal);
-}
-
-header {
-    background-color: var(--azul-escuro);
-    color: var(--branco);
-    padding: var(--espaco-4);
 }
 
 h1 {
@@ -42,6 +38,13 @@ h1 {
 
 h2 {
     font-size: var(--fonte-grande);
+}
+
+/* Estrutura da página */
+header {
+    background-color: var(--azul-escuro);
+    color: var(--branco);
+    padding: var(--espaco-4);
 }
 
 main {
@@ -58,9 +61,18 @@ main > * {
 }
 
 main > section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaco-2);
     background-color: var(--branco);
     border: 1px solid var(--borda);
     padding: var(--espaco-3);
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+
+main > section h2,
+main > section p {
+    margin: 0;
 }
 
 main img {
@@ -68,36 +80,13 @@ main img {
     height: auto;
 }
 
-@media (min-width: 480px) {
-    main {
-        padding: var(--espaco-4);
-    }
+footer {
+    display: flex;
+    justify-content: center;
+    padding: var(--espaco-3);
 }
 
-@media (min-width: 640px) {
-    main {
-        gap: var(--espaco-4);
-    }
-}
-
-@media (min-width: 768px) {
-    main > section {
-        grid-column: span 6;
-    }
-}
-
-@media (min-width: 1024px) {
-    main > section {
-        grid-column: span 4;
-    }
-}
-
-@media (min-width: 1280px) {
-    main {
-        max-width: 1200px;
-    }
-}
-
+/* Navegação */
 nav {
     display: flex;
     flex-wrap: wrap;
@@ -109,23 +98,6 @@ nav {
 
 nav a {
     color: var(--azul-escuro);
-}
-
-main > section {
-    display: flex;
-    flex-direction: column;
-    gap: var(--espaco-2);
-}
-
-main > section h2,
-main > section p {
-    margin: 0;
-}
-
-footer {
-    display: flex;
-    justify-content: center;
-    padding: var(--espaco-3);
 }
 
 nav.menu-desktop {
@@ -168,20 +140,6 @@ nav.menu-desktop .opcoes {
     z-index: 2;
 }
 
-@media (max-width: 767px) {
-    nav.menu-desktop {
-        display: none;
-    }
-
-    nav.menu-mobile {
-        display: block;
-    }
-
-    nav.menu-mobile .opcoes {
-        margin-top: var(--espaco-2);
-    }
-}
-
 nav.menu-mobile summary {
     list-style: none;
 }
@@ -190,15 +148,7 @@ nav.menu-mobile summary::-webkit-details-marker {
     display: none;
 }
 
-main > section {
-    transition: box-shadow 0.2s, transform 0.2s;
-}
-
-main > section:hover {
-    box-shadow: 0 4px 12px #0002;
-    transform: translateY(-2px);
-}
-
+/* Formulário */
 form fieldset {
     border: 1px solid var(--borda);
     padding: var(--espaco-3);
@@ -211,19 +161,6 @@ form input {
     border: 1px solid var(--borda);
 }
 
-form input:focus {
-    outline: 2px solid var(--azul);
-}
-
-form input:required:valid {
-    border-color: var(--verde);
-}
-
-form input:invalid:focus {
-    background-color: #fff4f4;
-    border-color: #b33b3b;
-}
-
 form button {
     padding: var(--espaco-2) var(--espaco-3);
     background-color: var(--azul-escuro);
@@ -233,14 +170,7 @@ form button {
     transition: background-color 0.2s, transform 0.2s;
 }
 
-form button:hover {
-    background-color: var(--azul);
-}
-
-form button:active {
-    transform: scale(0.97);
-}
-
+/* Componentes */
 .etiqueta {
     align-self: flex-start;
     background-color: var(--verde);
@@ -275,7 +205,107 @@ dialog::backdrop {
     background-color: #0008;
 }
 
+/* Estados dos componentes */
+main > section:hover {
+    box-shadow: 0 4px 12px #0002;
+    transform: translateY(-2px);
+}
+
+form input:focus {
+    outline: 2px solid var(--azul);
+}
+
+form input:required:valid {
+    border-color: var(--verde);
+}
+
+form input:invalid:focus {
+    background-color: #fff4f4;
+    border-color: #b33b3b;
+}
+
 form input.campo-erro {
     border: 2px solid #b33b3b;
     background-color: #fff4f4;
+}
+
+form button:hover {
+    background-color: var(--azul);
+}
+
+form button:active {
+    transform: scale(0.97);
+}
+
+/* Foco visível para navegação pelo teclado */
+a:focus-visible,
+summary:focus-visible,
+button:focus-visible,
+input:focus-visible {
+    outline: 3px solid var(--azul-escuro);
+    outline-offset: 3px;
+}
+
+/* Foco no conteúdo após a troca de página */
+main:focus {
+    outline: 3px solid var(--azul-escuro);
+    outline-offset: 3px;
+}
+
+/* Responsividade */
+@media (min-width: 480px) {
+    main {
+        padding: var(--espaco-4);
+    }
+}
+
+@media (min-width: 640px) {
+    main {
+        gap: var(--espaco-4);
+    }
+}
+
+@media (min-width: 768px) {
+    main > section {
+        grid-column: span 6;
+    }
+}
+
+@media (min-width: 1024px) {
+    main > section {
+        grid-column: span 4;
+    }
+}
+
+@media (min-width: 1280px) {
+    main {
+        max-width: 1200px;
+    }
+}
+
+@media (max-width: 767px) {
+    nav.menu-desktop {
+        display: none;
+    }
+
+    nav.menu-mobile {
+        display: block;
+    }
+
+    nav.menu-mobile .opcoes {
+        margin-top: var(--espaco-2);
+    }
+}
+
+/* Respeita a preferência por movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+    main > section,
+    form button {
+        transition: none;
+    }
+
+    main > section:hover,
+    form button:active {
+        transform: none;
+    }
 }
