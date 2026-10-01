@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Projetos - Mãos que Acolhem</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Mãos que Acolhem</h1>
+    </header>
+
+    <nav class="menu-desktop" aria-label="Navegação principal">
+    <a href="index.html">Início</a>
+    <details>
+        <summary>Participar</summary>
+        <div class="opcoes">
+            <a href="projetos.html">Projetos</a>
+            <a href="cadastro.html">Cadastro</a>
+        </div>
+    </details>
+</nav>
+
+<nav class="menu-mobile" aria-label="Navegação para celular">
+    <details>
+        <summary>☰ Menu</summary>
+        <div class="opcoes">
+            <a href="index.html">Início</a>
+            <a href="projetos.html">Projetos</a>
+            <a href="cadastro.html">Cadastro</a>
+        </div>
+    </details>
+</nav>
+
+    <main>
+        <section>
+            <h2>Projeto de cestas de alimentos</h2>
+            <span class="etiqueta">Projeto em andamento</span>
+            <p>Organizamos cestas de alimentos para ajudar famílias da comunidade.</p>
+            <button class="abrir-modal" type="button"
+        onclick="document.getElementById('modal-projeto').showModal()">
+    Saiba mais
+</button>
+        </section>
+
+        <section>
+            <h2>Doações</h2>
+            <p>As pessoas podem contribuir com alimentos ou com doações financeiras para apoiar o projeto.</p>
+        </section>
+
+        <section>
+            <h2>Voluntariado</h2>
+            <p>Os voluntários ajudam a organizar os alimentos e a preparar as cestas.</p>
+            <aside class="alerta" aria-label="Orientação para voluntários">
+    Quer ajudar a organizar as cestas? Acesse a página de
+    <a href="cadastro.html">cadastro</a>.
+</aside>
+        </section>
+    </main>
+
+    <dialog id="modal-projeto" aria-labelledby="titulo-modal">
+    <h2 id="titulo-modal">Sobre o projeto</h2>
+    <p>Reunimos doações de alimentos e organizamos cestas para famílias da comunidade.</p>
+    <form method="dialog">
+        <button type="submit">Fechar</button>
+    </form>
+</dialog>
+
+    <footer>
+        <p>Mãos que Acolhem — projeto fictício.</p>
+    </footer>
+</body>
+</html>
