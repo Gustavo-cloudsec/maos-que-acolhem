@@ -309,3 +309,61 @@ main:focus {
         transform: none;
     }
 }
+
+/* Modo escuro conforme a preferência do sistema */
+@media (prefers-color-scheme: dark) {
+    :root {
+        color-scheme: dark;
+        --fundo: #121a21;
+        --texto: #f5f8fa;
+        --borda: #8295a3;
+    }
+
+    main > section,
+    nav .opcoes,
+    dialog {
+        background-color: #1e2b36;
+    }
+
+    nav,
+    .alerta {
+        background-color: #243b4d;
+    }
+
+    a,
+    nav a,
+    nav summary {
+        color: #a9d9fa;
+    }
+
+    .alerta {
+        border-left-color: #a9d9fa;
+    }
+
+    form input {
+        background-color: #121a21;
+        color: var(--texto);
+    }
+
+    form input:required:valid {
+        border-color: #79d6a3;
+    }
+
+    form input:invalid:focus,
+    form input.campo-erro {
+        background-color: #421f27;
+        border-color: #ffb4b4;
+    }
+
+    form input:focus {
+        outline-color: #a9d9fa;
+    }
+
+    a:focus-visible,
+    summary:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    main:focus {
+        outline-color: #a9d9fa;
+    }
+}
