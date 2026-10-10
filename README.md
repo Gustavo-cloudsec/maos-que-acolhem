@@ -6,9 +6,29 @@ O site foi desenvolvido com HTML, CSS e JavaScript puro, sem frameworks.
 
 ## Como abrir
 
-Abra o arquivo `html/index.html` no navegador, mantendo a organização das pastas.
+Site publicado:
+
+https://gustavo-cloudsec.github.io/maos-que-acolhem/
+
+Para abrir o código-fonte localmente, abra o arquivo `html/index.html` no navegador, mantendo a organização das pastas.
 
 A versão atual permite navegar entre Início, Projetos e Cadastro sem recarregar a página inteira. O JavaScript troca o conteúdo usando os templates do HTML e os endereços `#inicio`, `#projetos` e `#cadastro`.
+
+### Executar a versão de produção localmente
+
+Com Node.js 24 e npm instalados, execute os comandos na pasta principal do projeto:
+
+```bash
+npm ci
+npm run build
+npx http-server dist -a 127.0.0.1 -p 8080 -c-1
+```
+
+Depois, abra:
+
+http://127.0.0.1:8080/
+
+Para encerrar o servidor, pressione Ctrl + C no terminal.
 
 ## Organização dos arquivos
 
@@ -18,10 +38,21 @@ A versão atual permite navegar entre Início, Projetos e Cadastro sem recarrega
 | `html/projetos.html` | Página separada de projetos, mantida da etapa anterior. |
 | `html/cadastro.html` | Página separada de cadastro, mantida da etapa anterior. |
 | `css/style.css` | Cores, layout, componentes, responsividade, foco visível e modo escuro. |
-| `imagens/doacoes.jpg` | Imagem utilizada na apresentação da ONG. |
+| `imagens/doacoes.jpg` | Imagem original, mantida como alternativa ao WebP. |
+| `imagens/doacoes-320.webp` | Versão da imagem com 320 × 213 pixels. |
+| `imagens/doacoes-600.webp` | Versão da imagem com 600 × 399 pixels. |
 | `js/armazenamento.js` | Gravação e leitura do rascunho no navegador. |
 | `js/formulario.js` | Validação, mensagens e recuperação do formulário. |
 | `js/main.js` | Troca de conteúdo, controle dos menus e abertura do modal. |
+| `build.cjs` | Geração da pasta dist com HTML, CSS e JavaScript minificados. |
+| `package.json` | Dependências de desenvolvimento e comando de build. |
+| `package-lock.json` | Registro das versões das dependências para instalação com npm ci. |
+| `.github/workflows/deploy.yml` | Automação do build e da publicação no GitHub Pages. |
+| `.gitignore` | Impede o versionamento das pastas node_modules e dist. |
+
+A pasta `dist` é gerada pelo build. Ela contém o `index.html` na raiz e as pastas de CSS, JavaScript e imagens utilizadas na publicação.
+
+As páginas separadas de projetos e cadastro permanecem no código-fonte como registro da etapa anterior. A versão publicada utiliza os templates de `html/index.html`.
 
 ## Funcionalidades
 
@@ -32,6 +63,8 @@ A versão atual permite navegar entre Início, Projetos e Cadastro sem recarrega
 - Validação de campos obrigatórios, e-mail e formatos numéricos.
 - Gravação automática do rascunho no navegador.
 - Modo escuro conforme a preferência do sistema ou navegador.
+- Imagem com versões WebP selecionadas pelo navegador.
+- Publicação automática após atualizações na main.
 
 ## Funções JavaScript
 
@@ -65,6 +98,8 @@ O envio é interrompido quando existe um campo inválido, e o foco vai para o pr
 O rascunho usa a chave `maosQueAcolhemCadastro` no localStorage. Durante a edição, também são salvos valores incompletos para permitir continuar depois.
 
 O cadastro é uma simulação: não envia dados ao servidor. Para testar, devem ser usados dados fictícios.
+
+O armazenamento pertence à origem utilizada no navegador. Um rascunho salvo no servidor local não é transferido automaticamente para o site publicado.
 
 ## Acessibilidade
 
@@ -103,6 +138,74 @@ As três combinações atendem ao mínimo de 4,5:1 para texto normal no critéri
 
 Essas medições se referem aos elementos listados e não representam uma avaliação completa da acessibilidade do site.
 
+## Build e minificação
+
+O comando `npm run build` executa o arquivo `build.cjs`.
+
+O processo utiliza:
+
+- Terser para minificar o JavaScript.
+- Clean CSS para minificar o CSS.
+- HTML Minifier Terser para minificar o HTML.
+
+O build ajusta os caminhos dos recursos para o `index.html` publicado na raiz da pasta dist e copia a pasta de imagens.
+
+Os nomes globais das funções JavaScript são preservados para manter a comunicação entre os três scripts.
+
+Na versão atual, o total dos arquivos HTML, CSS e JavaScript passou de 17.824 para 12.319 bytes, uma redução de 30,89%. Esse cálculo não inclui as imagens.
+
+## Otimização da imagem
+
+As versões WebP foram geradas com Sharp, usando qualidade 80 para equilibrar tamanho e qualidade visual.
+
+| Imagem | Dimensões | Tamanho |
+| --- | --- | --- |
+| JPEG original | 600 × 399 | 63.461 bytes |
+| WebP maior | 600 × 399 | 21.334 bytes |
+| WebP menor | 320 × 213 | 9.868 bytes |
+
+A versão WebP de 600 × 399 ficou 66,38% menor que o JPEG original.
+
+O HTML utiliza picture, source, srcset e sizes para permitir que o navegador escolha a versão conforme o espaço disponível e a densidade de pixels da tela. O JPEG permanece como alternativa para navegadores sem suporte ao WebP.
+
+Os atributos width e height reservam a proporção da imagem. O CSS mantém max-width: 100% e height: auto.
+
+As imagens otimizadas estão versionadas no repositório. O build copia esses arquivos para dist, sem executar uma nova conversão.
+
+### Comparação de carregamento local
+
+Foram realizadas três medições antes e três depois da otimização, no painel Network do navegador, com Slow 4G, cache desativado e a mesma janela.
+
+| Medida | Antes, com JPEG | Depois, com WebP |
+| --- | --- | --- |
+| Média do indicador Finish | 2,21 segundos | 1,97 segundos |
+| Dados transferidos no carregamento | 77,6 kB | 35,7 kB |
+
+A média do Finish diminuiu aproximadamente 10,7%, e os dados transferidos diminuíram aproximadamente 54%.
+
+O indicador Finish corresponde ao término das requisições registradas no painel Network. Os resultados foram obtidos no servidor local com rede simulada e não garantem o mesmo tempo em todos os dispositivos ou conexões.
+
+## Publicação
+
+O site está hospedado no GitHub Pages:
+
+https://gustavo-cloudsec.github.io/maos-que-acolhem/
+
+Nas configurações do repositório, a origem de publicação foi definida como GitHub Actions.
+
+O arquivo `.github/workflows/deploy.yml` executa automaticamente estas etapas quando a main recebe uma atualização:
+
+1. Baixa o código do repositório.
+2. Prepara o Node.js 24.
+3. Instala as dependências com npm ci.
+4. Executa npm run build.
+5. Envia a pasta dist como artefato.
+6. Publica o artefato no GitHub Pages.
+
+A etapa deploy depende do sucesso da etapa build. O workflow também permite execução manual.
+
+A primeira publicação foi acionada pelo merge do pull request #9, no commit d97fc82. As etapas build e deploy terminaram com sucesso.
+
 ## Testes realizados nesta etapa
 
 Os testes foram realizados manualmente.
@@ -123,20 +226,26 @@ Os testes foram realizados manualmente.
 | Modo escuro | Foi exibido nas áreas Início, Projetos e Cadastro. |
 | Funções no modo escuro | O modal e o aviso de campo obrigatório continuaram funcionando. |
 | Retorno ao modo claro | As cores anteriores voltaram após alterar a preferência simulada. |
+| Build local | A pasta dist foi gerada com os arquivos minificados e os recursos necessários. |
+| Servidor HTTP local | A versão de produção abriu e manteve a navegação, o modal e o formulário. |
+| Imagem otimizada | O painel Network registrou o carregamento da versão WebP de 600 pixels. |
+| Automação de publicação | As etapas build e deploy terminaram com sucesso no GitHub Actions. |
+| Site publicado | Foram conferidos a imagem, o visual, a navegação, o modal, a validação e a recuperação do rascunho. |
 
 ## Limitações e verificações pendentes
 
 - O pattern do CPF verifica o formato de 11 números, não os dígitos verificadores.
 - O rascunho depende do armazenamento permitido pelo navegador.
-- A abertura direta por file:// ainda precisa ser comparada com a execução por um servidor HTTP local.
+- Os dados do cadastro ficam no navegador; não existe envio ao servidor.
 - Ainda falta medir as combinações de contraste específicas do modo escuro.
 - O teste com Narrador foi parcial; ainda falta ampliar a verificação para os demais conteúdos e componentes.
-- Ainda falta concluir a preparação e a publicação da versão de produção.
+- A seleção da imagem de 320 pixels ainda precisa de uma verificação específica em diferentes telas e densidades de pixels.
+- Os testes registrados foram manuais; não há uma suíte de testes automatizados.
 - As melhorias realizadas não representam uma confirmação completa de conformidade com WCAG AA.
 
 ## Versionamento
 
-A main mantém a versão de referência. A develop reúne as melhorias.
+Foi utilizado um fluxo de branches inspirado no GitFlow: a main mantém a versão publicada, a develop reúne as melhorias e as branches de trabalho separam as alterações.
 
 A feature/acessibilidade foi utilizada para os ajustes de navegação e integrada à develop após os testes.
 
@@ -146,4 +255,16 @@ A feature/rotulos-acessiveis foi utilizada para melhorar os rótulos do cadastro
 
 A feature/modo-escuro foi utilizada para adicionar o tema escuro. A alteração foi registrada no commit ce773cd e integrada à develop pelo pull request #4, vinculado à milestone “Entrega da prática 4”.
 
-Após os merges feitos pelo GitHub, a branch develop local foi atualizada com git pull --ff-only origin develop.
+A documentação dos testes foi atualizada pelo pull request #5.
+
+A feature/build-producao foi utilizada para criar o build e integrada à develop pelo pull request #6.
+
+A feature/otimizacao-imagem foi utilizada para adicionar as versões WebP e integrada à develop pelo pull request #7.
+
+A feature/deploy-producao foi utilizada para configurar o GitHub Actions e integrada à develop pelo pull request #8.
+
+O pull request #9 integrou a develop à main e acionou a primeira publicação.
+
+A branch docs/finalizar-readme foi criada para registrar os resultados do build, da otimização e da publicação.
+
+Após os merges no GitHub, as branches locais foram sincronizadas com o repositório remoto. Foram utilizados comandos de atualização com --ff-only para evitar merges locais desnecessários.
