@@ -1,0 +1,16 @@
+{
+  "name": "maos-que-acolhem",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Projeto academico de uma ONG ficticia",
+  "devDependencies": {
+    "clean-css": "^5.3.3",
+    "html-minifier-terser": "^7.2.0",
+    "http-server": "^14.1.1",
+    "sharp": "^0.35.5",
+    "terser": "^5.51.2"
+  },
+  "scripts": {
+    "build": "node build.cjs"
+  }
+}
